@@ -25,6 +25,7 @@ def fetch_planet_image(planet_name):
         return image_url
     except:
         return None
+
 def display_planet_info(planet_name):
     planets = get_planet_data()
     planet_data = planets.get(planet_name)
@@ -37,9 +38,13 @@ def display_planet_info(planet_name):
         image_url = fetch_planet_image(planet_name)
         if image_url:
             st.sidebar.image(image_url, caption=f"{planet_name} (NASA)", use_container_width=True)
-
         else:
             st.sidebar.write("No image found for this planet.")
+    
+    
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("🛠️ Created by **ZAHIRA KHAN**")
+
 def create_solar_system():
     planets = get_planet_data()
     trace = []
@@ -56,7 +61,7 @@ def create_solar_system():
         ))
 
     layout = go.Layout(
-        title="🌌 Interactive Solar System App By ZAHIRA KHAN",
+        title="🌌 Interactive Solar System ",
         scene=dict(
             xaxis_title='Distance from Sun (in million km)',
             yaxis_title='',
@@ -69,7 +74,6 @@ def create_solar_system():
     fig = go.Figure(data=trace, layout=layout)
     return fig
 
-# Main 
 def main():
     st.set_page_config(page_title="Interactive Solar System", layout="wide")
     st.title("🪐 Interactive Solar System")
@@ -79,7 +83,7 @@ def main():
     fig = create_solar_system()
     st.plotly_chart(fig, use_container_width=True)
 
-    # Sidebar 
+    # Sidebar
     planet_name = st.sidebar.selectbox("🔭 Select a planet:", list(get_planet_data().keys()))
     display_planet_info(planet_name)
 
