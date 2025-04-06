@@ -2,7 +2,6 @@ import streamlit as st
 import requests
 import plotly.graph_objs as go
 
-# Placeholder planetary data – can be replaced with real API
 def get_planet_data():
     planets = {
         "Mercury": {"radius": 2439.7, "distance": 57.91},
@@ -16,7 +15,6 @@ def get_planet_data():
     }
     return planets
 
-# Fetch NASA image of the selected planet
 def fetch_planet_image(planet_name):
     url = f"https://images-api.nasa.gov/search?q={planet_name}&media_type=image"
     response = requests.get(url)
@@ -27,8 +25,6 @@ def fetch_planet_image(planet_name):
         return image_url
     except:
         return None
-
-# Show selected planet info in sidebar
 def display_planet_info(planet_name):
     planets = get_planet_data()
     planet_data = planets.get(planet_name)
@@ -40,11 +36,10 @@ def display_planet_info(planet_name):
         
         image_url = fetch_planet_image(planet_name)
         if image_url:
-            st.sidebar.image(image_url, caption=f"{planet_name} (NASA)", use_column_width=True)
+            st.sidebar.image(image_url, caption=f"{planet_name} (NASA)", use_container_width=True)
+
         else:
             st.sidebar.write("No image found for this planet.")
-
-# Create a 3D Solar System Model using Plotly
 def create_solar_system():
     planets = get_planet_data()
     trace = []
@@ -55,13 +50,13 @@ def create_solar_system():
             y=[0],
             z=[0],
             mode='markers+text',
-            marker=dict(size=max(data["radius"] / 3000, 5)),  # Min size to keep small planets visible
+            marker=dict(size=max(data["radius"] / 3000, 5)), 
             text=[planet],
             textposition='top center'
         ))
 
     layout = go.Layout(
-        title="🌌 Interactive Solar System",
+        title="🌌 Interactive Solar System App By ZAHIRA KHAN",
         scene=dict(
             xaxis_title='Distance from Sun (in million km)',
             yaxis_title='',
@@ -74,7 +69,7 @@ def create_solar_system():
     fig = go.Figure(data=trace, layout=layout)
     return fig
 
-# Main App
+# Main 
 def main():
     st.set_page_config(page_title="Interactive Solar System", layout="wide")
     st.title("🪐 Interactive Solar System")
@@ -84,7 +79,7 @@ def main():
     fig = create_solar_system()
     st.plotly_chart(fig, use_container_width=True)
 
-    # Sidebar Info
+    # Sidebar 
     planet_name = st.sidebar.selectbox("🔭 Select a planet:", list(get_planet_data().keys()))
     display_planet_info(planet_name)
 
